@@ -16,9 +16,11 @@
 
 package com.pig4cloud.pig.auth;
 
+import com.pig4cloud.pig.auth.wechat.WechatProperties;
 import com.pig4cloud.pig.common.feign.annotation.EnablePigFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
@@ -28,6 +30,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnablePigFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
+@EnableConfigurationProperties({
+		WechatProperties.class
+})
 public class PigAuthApplication {
 
 	public static void main(String[] args) {
