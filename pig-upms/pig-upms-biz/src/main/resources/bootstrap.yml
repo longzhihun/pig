@@ -15,3 +15,6 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @profiles.active@
+  flyway:
+    baseline-on-migrate: true
+    locations: classpath:db/migration/
