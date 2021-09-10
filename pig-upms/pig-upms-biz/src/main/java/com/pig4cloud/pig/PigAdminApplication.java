@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pig4cloud.pig.admin;
+package com.pig4cloud.pig;
 
 import com.pig4cloud.pig.common.feign.annotation.EnablePigFeignClients;
 import com.pig4cloud.pig.common.security.annotation.EnablePigResourceServer;
