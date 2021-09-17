@@ -20,6 +20,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.jdhk.entity.UUser;
 import com.pig4cloud.pig.jdhk.mapper.UUserMapper;
 import com.pig4cloud.pig.jdhk.service.UUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,4 +34,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UUserServiceImpl extends ServiceImpl<UUserMapper, UUser> implements UUserService {
 
+	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
+	@Autowired
+	private UUserMapper uUserMapper;
+
+	@Override
+	public boolean saveUuser(UUser uUser) {
+		uUser.setPassword(ENCODER.encode(uUser.getPassword()));
+		uUserMapper.insert(uUser);
+		return true;
+	}
 }

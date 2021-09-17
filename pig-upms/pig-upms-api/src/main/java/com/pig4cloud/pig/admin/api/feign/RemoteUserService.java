@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.api.feign;
 
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
+import com.pig4cloud.pig.admin.api.entity.UUser;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteUserServiceFallbackFactory;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
@@ -50,5 +51,14 @@ public interface RemoteUserService {
 	 */
 	@GetMapping("/social/info/{inStr}")
 	R<UserInfo> social(@PathVariable("inStr") String inStr);
+
+	/**
+	 * 通过用户名查询用户、角色信息
+	 * @param mobile 电话号码
+	 * @param from 调用标志
+	 * @return R
+	 */
+	@GetMapping("/uuser/rest/info/{mobile}")
+	R<UUser> uUserinfo(@PathVariable("mobile") String mobile, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

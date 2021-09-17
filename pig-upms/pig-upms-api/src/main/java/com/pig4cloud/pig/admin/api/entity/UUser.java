@@ -14,11 +14,10 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.admin.api.entity;
 
-package com.pig4cloud.pig.jdhk.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.jdhk.entity.UUser;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import lombok.Data;
 
 /**
  * 用户表
@@ -26,6 +25,32 @@ import com.pig4cloud.pig.jdhk.entity.UUser;
  * @author Sean Guo
  * @date 2021-09-08 19:08:30
  */
-public interface UUserService extends IService<UUser> {
-	boolean saveUuser(UUser uUser);
+@Data
+public class UUser extends BaseEntity {
+
+    /**
+     * id
+     */
+    private Integer id;
+
+    /**
+     * userName
+     */
+    private String userName;
+
+    /**
+     * mobile
+     */
+    private String mobile;
+
+    /**
+     * password
+     */
+    private String password;
+
+    /**
+     * wechatId
+     */
+    private String wechatId;
+
 }

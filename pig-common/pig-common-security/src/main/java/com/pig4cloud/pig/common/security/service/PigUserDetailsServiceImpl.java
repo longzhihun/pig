@@ -20,6 +20,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.entity.UUser;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.common.core.constant.CacheConstants;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
@@ -37,10 +38,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户详细信息
@@ -69,8 +67,20 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 			return (PigUser) cache.get(username).get();
 		}
 
+		//System User
 		R<UserInfo> result = remoteUserService.info(username, SecurityConstants.FROM_IN);
-		UserDetails userDetails = getUserDetails(result);
+
+		//Normal User
+		if (result == null || result.getData() == null ) {
+			R<UUser> uUserInfo = remoteUserService.uUserinfo(username, SecurityConstants.FROM_IN);
+			UserDetails userDetails = getUserDetailsByUuser(uUserInfo);
+			if (cache != null) {
+				cache.put(username, userDetails);
+			}
+			return userDetails;
+		}
+
+		UserDetails userDetails = getUserDetailsBySysUser(result);
 		if (cache != null) {
 			cache.put(username, userDetails);
 		}
@@ -78,11 +88,11 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	/**
-	 * 构建userdetails
+	 * 基于系统用户构建userdetails
 	 * @param result 用户信息
 	 * @return
 	 */
-	private UserDetails getUserDetails(R<UserInfo> result) {
+	private UserDetails getUserDetailsBySysUser(R<UserInfo> result) {
 		if (result == null || result.getData() == null) {
 			throw new UsernameNotFoundException("用户不存在");
 		}
@@ -104,6 +114,22 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 		return new PigUser(user.getUserId(), user.getDeptId(), user.getUsername(),
 				SecurityConstants.BCRYPT + user.getPassword(),
 				StrUtil.equals(user.getLockFlag(), CommonConstants.STATUS_NORMAL), true, true, true, authorities);
+	}
+
+	/**
+	 * 基于普通用户构建userdetails
+	 * @param result 用户信息
+	 * @return
+	 */
+	private UserDetails getUserDetailsByUuser(R<UUser> result) {
+		if (result == null || result.getData() == null) {
+			throw new UsernameNotFoundException("用户不存在");
+		}
+		UUser uUser = result.getData();
+		// 构造security用户
+		return new PigUser(uUser.getId(), 0, uUser.getUserName(),
+				SecurityConstants.BCRYPT + uUser.getPassword(),
+				true, true, true, true, new ArrayList<>());
 	}
 
 }

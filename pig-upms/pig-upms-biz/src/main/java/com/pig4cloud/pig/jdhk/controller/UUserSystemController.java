@@ -23,10 +23,10 @@ import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.jdhk.entity.UUser;
 import com.pig4cloud.pig.jdhk.service.UUserService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/uuser" )
 @Api(value = "uuser", tags = "用户表管理")
-public class UUserController {
+public class UUserSystemController {
 
     private final  UUserService uUserService;
 
@@ -80,7 +80,7 @@ public class UUserController {
     @PostMapping
     @PreAuthorize("@pms.hasPermission('demo_uuser_add')" )
     public R save(@RequestBody UUser uUser) {
-        return R.ok(uUserService.save(uUser));
+        return R.ok(uUserService.saveUuser(uUser));
     }
 
     /**

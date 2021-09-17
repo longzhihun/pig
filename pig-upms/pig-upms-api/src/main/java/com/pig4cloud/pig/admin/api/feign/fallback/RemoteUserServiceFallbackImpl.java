@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.api.feign.fallback;
 
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
+import com.pig4cloud.pig.admin.api.entity.UUser;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.common.core.util.R;
 import lombok.Setter;
@@ -54,6 +55,12 @@ public class RemoteUserServiceFallbackImpl implements RemoteUserService {
 	@Override
 	public R<UserInfo> social(String inStr) {
 		log.error("feign 查询用户信息失败:{}", inStr, cause);
+		return null;
+	}
+
+	@Override
+	public R<UUser> uUserinfo(String username, String from) {
+		log.error("feign 查询普通用户:{}", username, cause);
 		return null;
 	}
 
