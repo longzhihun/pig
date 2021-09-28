@@ -56,6 +56,8 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 
 	private final RedisTemplate<String, Object> redisTemplate;
 
+	private static final String WECHAT_SOURCE = "wechat";
+
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
@@ -75,13 +77,13 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 			}
 
 			boolean isIgnoreClient = configProperties.getIgnoreClients().contains(WebUtils.getClientId(request));
+
 			try {
 				// only oauth and the request not in ignore clients need check code.
-				if (!isIgnoreClient) {
+				if (!isIgnoreClient && !WECHAT_SOURCE.equals(request.getQueryParams().getFirst("source"))) {
 					checkCode(request);
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
@@ -93,8 +95,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 						DataBuffer dataBuffer = response.bufferFactory().wrap(bytes);
 
 						monoSink.success(dataBuffer);
-					}
-					catch (JsonProcessingException jsonProcessingException) {
+					} catch (JsonProcessingException jsonProcessingException) {
 						log.error("对象输出异常", jsonProcessingException);
 						monoSink.error(jsonProcessingException);
 					}
