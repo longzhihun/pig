@@ -69,4 +69,10 @@ public class UUser extends BaseEntity {
     @ApiModelProperty(value="wechatId")
     private String wechatId;
 
+	/**
+	 * avatarUrl
+	 */
+	@ApiModelProperty(value="avatarUrl")
+	private String avatarUrl;
+
 }

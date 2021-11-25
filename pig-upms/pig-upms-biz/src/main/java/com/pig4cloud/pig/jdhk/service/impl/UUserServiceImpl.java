@@ -41,6 +41,7 @@ public class UUserServiceImpl extends ServiceImpl<UUserMapper, UUser> implements
 
 	@Override
 	public boolean saveUuser(UUser uUser) {
+		uUser.setAvatarUrl("/static/images/default_avatar.png");
 		uUser.setPassword(ENCODER.encode(uUser.getPassword()));
 		uUserMapper.insert(uUser);
 		return true;

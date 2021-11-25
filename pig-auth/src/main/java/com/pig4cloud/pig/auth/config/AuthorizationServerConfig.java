@@ -99,6 +99,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pigUser.getId());
 			additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pigUser.getUsername());
 			additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, pigUser.getDeptId());
+			additionalInfo.put("avatar_url", pigUser.getAvatarUrl());
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 			return accessToken;
 		};

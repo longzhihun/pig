@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.api.entity;
 
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -53,4 +54,9 @@ public class UUser extends BaseEntity {
      */
     private String wechatId;
 
+	/**
+	 * avatarUrl
+	 */
+	@ApiModelProperty(value="avatarUrl")
+	private String avatarUrl;
 }

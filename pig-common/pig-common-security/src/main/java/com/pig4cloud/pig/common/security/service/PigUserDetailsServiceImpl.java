@@ -111,7 +111,7 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 		SysUser user = info.getSysUser();
 
 		// 构造security用户
-		return new PigUser(user.getUserId(), user.getDeptId(), user.getUsername(),
+		return new PigUser(user.getUserId(), user.getDeptId(), user.getAvatar(), user.getUsername(),
 				SecurityConstants.BCRYPT + user.getPassword(),
 				StrUtil.equals(user.getLockFlag(), CommonConstants.STATUS_NORMAL), true, true, true, authorities);
 	}
@@ -127,7 +127,7 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 		}
 		UUser uUser = result.getData();
 		// 构造security用户
-		return new PigUser(uUser.getId(), 0, uUser.getUserName(),
+		return new PigUser(uUser.getId(), 0, uUser.getAvatarUrl(), uUser.getUserName(),
 				SecurityConstants.BCRYPT + uUser.getPassword(),
 				true, true, true, true, new ArrayList<>());
 	}

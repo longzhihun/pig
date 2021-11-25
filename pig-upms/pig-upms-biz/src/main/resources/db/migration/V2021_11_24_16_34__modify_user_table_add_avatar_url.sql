@@ -1,0 +1,1 @@
+alter table u_user add column avatar_url varchar(200) default '/static/images/default_avatar.png';
